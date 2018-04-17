@@ -13,7 +13,7 @@ from astropy.cosmology import FlatLambdaCDM
 from GCR import BaseGenericCatalog
 
 __all__ = ['AlphaQGalaxyCatalog']
-__version__ = '3.0.0'
+__version__ = '4.0.0'
 
 
 def md5(fname, chunk_size=65536):
@@ -153,7 +153,7 @@ class AlphaQGalaxyCatalog(BaseGenericCatalog):
 
         # specify quantity modifiers
         self._quantity_modifiers = {
-            'galaxy_id' :    (_gen_galaxy_id, 'galaxyID'),
+            'galaxy_id' :    'galaxyID',
             'ra':            'ra',
             'dec':           'dec',
             'ra_true':       'ra_true',
@@ -258,10 +258,18 @@ class AlphaQGalaxyCatalog(BaseGenericCatalog):
         # add magnitudes
         for band in 'ugrizY':
             if band != 'Y':
-                self._quantity_modifiers['mag_true_{}_sdss'.format(band)] = 'SDSS_filters/magnitude:SDSS_{}:observed'.format(band)
-                self._quantity_modifiers['Mag_true_{}_sdss_z0'.format(band)] = 'SDSS_filters/magnitude:SDSS_{}:rest'.format(band)
-            self._quantity_modifiers['mag_true_{}_lsst'.format(band)] = 'LSST_filters/magnitude:LSST_{}:observed'.format(band.lower())
-            self._quantity_modifiers['Mag_true_{}_lsst_z0'.format(band)] = 'LSST_filters/magnitude:LSST_{}:rest'.format(band.lower())
+                self._quantity_modifiers['mag_true_{}_sdss'.format(band)] = 'SDSS_filters/magnitude:SDSS_{}:observed:dustAtlas'.format(band)
+                self._quantity_modifiers['Mag_true_{}_sdss_z0'.format(band)] = 'SDSS_filters/magnitude:SDSS_{}:rest:dustAtlas'.format(band)
+            self._quantity_modifiers['mag_true_{}_lsst'.format(band)] = 'LSST_filters/magnitude:LSST_{}:observed:dustAtlas'.format(band.lower())
+            self._quantity_modifiers['Mag_true_{}_lsst_z0'.format(band)] = 'LSST_filters/magnitude:LSST_{}:rest:dustAtlas'.format(band.lower())
+
+        # No host extinction 
+        for band in 'ugrizY':
+            if band != 'Y':
+                self._quantity_modifiers['mag_true_{}_sdss_no_host_extinction'.format(band)] = 'SDSS_filters/magnitude:SDSS_{}:observed'.format(band)
+                self._quantity_modifiers['Mag_true_{}_sdss_z0_no_host_extinction'.format(band)] = 'SDSS_filters/magnitude:SDSS_{}:rest'.format(band)
+            self._quantity_modifiers['mag_true_{}_lsst_no_host_extinction'.format(band)] = 'LSST_filters/magnitude:LSST_{}:observed'.format(band.lower())
+            self._quantity_modifiers['Mag_true_{}_lsst_z0_no_host_extinction'.format(band)] = 'LSST_filters/magnitude:LSST_{}:rest'.format(band.lower())
 
         # add SEDs
         translate_component_name = {'total': '', 'disk': '_disk', 'spheroid': '_bulge'}
@@ -272,7 +280,10 @@ class AlphaQGalaxyCatalog(BaseGenericCatalog):
                 continue
             component, start, width = m.groups()
             self._quantity_modifiers['sed_{}_{}{}'.format(start, width, translate_component_name[component])] = quantity
-
+        if catalog_version < StrictVersion('4.0'):
+            self._quantity_modifiers.update({
+                'galaxy_id' :    (_gen_galaxy_id, 'galaxyID'),
+            })
         # make quantity modifiers work in older versions
         if catalog_version < StrictVersion('3.0'):
             self._quantity_modifiers.update({
