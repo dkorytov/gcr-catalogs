@@ -1,12 +1,10 @@
 subclass_name: alphaq.AlphaQGalaxyCatalog
 
-filename: /global/projecta/projectdirs/lsst/groups/CS/descqa/catalog/ANL_AlphaQ_v3.0.hdf5
+filename: /global/projecta/projectdirs/lsst/groups/CS/descqa/catalog/v4.3.full.all.hdf5
 
 lightcone: true
 
-version: "3.0.0"
-
-md5: 1efca46756b59b75d23e5382ee97cd10
+version: "4.0.0"
 
 creators: [ 'Andrew Benson', 'Andrew Hearin',  'Katrin Heitmann', 'Danila Korytov', 'Eve Kovacs']
 

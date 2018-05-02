@@ -1,6 +1,7 @@
 subclass_name: alphaq.AlphaQGalaxyCatalog
 
-filename: /global/projecta/projectdirs/lsst/groups/CS/descqa/catalog/v4.no_interpolate.2.all.hdf5
+#filename: /global/projecta/projectdirs/lsst/groups/CS/descqa/catalog/v4.no_interpolate.2.all.hdf5
+filename: /global/projecta/projectdirs/lsst/groups/CS/descqa/catalog/v4.3.full.all.hdf5
 
 lightcone: true
 
